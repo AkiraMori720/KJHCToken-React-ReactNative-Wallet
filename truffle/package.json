@@ -1,0 +1,11 @@
+{
+  "name": "KJHCToken",
+  "version": "1.0.0",
+  "description": "Etherium ERC20 Token",
+  "main": "index.js",
+  "author": "kzar",
+  "license": "MIT",
+  "dependencies": {
+    "zeppelin-solidity": "^1.12.0"
+  }
+}

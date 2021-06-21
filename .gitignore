@@ -1,0 +1,7 @@
+truffle/node_modules/
+truffle/build/
+truffle/.idea/.gitignore
+truffle/.idea/modules.xml
+truffle/.idea/truffle.iml
+truffle/.idea/vcs.xml
+truffle/yarn.lock
