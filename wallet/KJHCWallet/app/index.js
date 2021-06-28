@@ -20,6 +20,8 @@ import InAppNotification from './containers/InAppNotification';
 import Toast from './containers/Toast';
 import {supportSystemTheme} from './utils/deviceInfo';
 import {appInit} from './actions/app';
+import AlertService from './lib/alertService';
+import DropdownAlert from 'react-native-dropdownalert';
 
 export default class Root extends React.Component {
     constructor(props) {
@@ -93,6 +95,7 @@ export default class Root extends React.Component {
                                     <AppContainer/>
                                     <InAppNotification/>
                                     <Toast/>
+                                    <DropdownAlert ref={(ref) => AlertService.setAlert(ref)} />
                                 </ActionSheetProvider>
                             </DimensionsContext.Provider>
                         </ThemeContext.Provider>

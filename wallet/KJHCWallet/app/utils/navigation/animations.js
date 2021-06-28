@@ -13,7 +13,7 @@ const forFadeFromCenter = ({
 	const opacity = conditional(
 		closing,
 		current.progress,
-		current.progress.interpolate({
+		current.progress.interpolateNode({
 			inputRange: [0, 0.5, 0.9, 1],
 			outputRange: [0, 0.25, 0.7, 1]
 		})

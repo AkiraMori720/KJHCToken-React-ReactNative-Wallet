@@ -3,93 +3,120 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { ThemeContext } from '../theme';
 import {
-	outsideHeader, themedHeader, StackAnimation, ModalAnimation
+	outsideHeader, themedHeader, StackAnimation, ModalAnimation, defaultHeader,
 } from '../utils/navigation';
 
-import OnBoardingView from '../views/OnBoardingView';
-// // SignupStack
-// import SignupView from '../views/SignupView';
-// import RegisterView from '../views/RegisterView';
-// import RegisterCompleteView from '../views/RegisterCompleteView';
-// import AccountUnlockView from '../views/AccountUnlockView';
-//
-// // SigninStack
-// import SigninView from '../views/SigninView';
-// import LoginView from '../views/LoginView';
-// import ForgotPasswordView from '../views/ForgotPasswordView';
-//
-// // FirstCardStack
-// import FirstCardView from '../views/FirstCardView';
-//
-// import AuthenticationWebView from '../views/AuthenticationWebView';
+import * as HeaderButton from '../containers/HeaderButton';
+import {themes} from '../constants/colors';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Text} from 'react-native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+
+import Sidebar from '../views/SidebarView';
+import SelectActiveWalletBtc from '../views/btc/SelectActiveWalletBtc';
+
+const stack = createStackNavigator();
+const BtcStack = () => {
+	const { theme } = React.useContext(ThemeContext);
+	return (
+		<stack.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation }}>
+			<stack.Screen
+				name='SelectActiveWallet'
+				component={SelectActiveWalletBtc}
+				options={({navigation}) => ({
+					title: 'Select Active Wallet',
+					headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='rooms-list-view-sidebar' />,
+				})}
+			/>
+		</stack.Navigator>
+	);
+};
+
+const EthStack = () => {
+	const { theme } = React.useContext(ThemeContext);
+	return (
+		<stack.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation }}>
+			<stack.Screen
+				name='SelectActiveWallet'
+				component={SelectActiveWalletBtc}
+				options={({navigation}) => ({
+					title: 'Select Active Wallet',
+					headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='rooms-list-view-sidebar' />,
+				})}
+			/>
+		</stack.Navigator>
+	);
+};
 
 
 // Outside
-const Outside = createStackNavigator();
-const OutsideStack = () => {
+const Btc = createDrawerNavigator();
+const BtcDraw = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<Outside.Navigator screenOptions={{ ...outsideHeader, ...themedHeader(theme), ...StackAnimation }}>
-			<Outside.Screen
-				name='OnBoarding'
-				component={OnBoardingView}
-				options={{ headerShown: false }}
+		<Btc.Navigator
+			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} tab={'btc'} />}
+			screenOptions={{ headerShown: false }}
+			drawerType='back'>
+			<Btc.Screen
+				name='BtcStack'
+				component={BtcStack}
 			/>
-			{/*<Outside.Screen*/}
-			{/*	name='SignupView'*/}
-			{/*	component={SignupView}*/}
-			{/*	options={{ headerShown: false }}*/}
-			{/*/>*/}
-			{/*<Outside.Screen*/}
-			{/*	name='RegisterView'*/}
-			{/*	component={RegisterView}*/}
-			{/*/>*/}
-			{/*<Outside.Screen*/}
-			{/*	name='RegisterCompleteView'*/}
-			{/*	component={RegisterCompleteView}*/}
-			{/*	options={RegisterCompleteView.navigationOptions}*/}
-			{/*/>*/}
-			{/*<Outside.Screen*/}
-			{/*	name='AccountUnlockView'*/}
-			{/*	component={AccountUnlockView}*/}
-			{/*/>*/}
-			{/*<Outside.Screen*/}
-			{/*	name='SigninView'*/}
-			{/*	component={SigninView}*/}
-			{/*/>*/}
-			{/*<Outside.Screen*/}
-			{/*	name='LoginView'*/}
-			{/*	component={LoginView}*/}
-			{/*/>*/}
-			{/*<Outside.Screen*/}
-			{/*	name='ForgotPasswordView'*/}
-			{/*	component={ForgotPasswordView}*/}
-			{/*	options={ForgotPasswordView.navigationOptions}*/}
-			{/*/>*/}
-		</Outside.Navigator>
+		</Btc.Navigator>
+	);
+};
+
+
+const Eth = createDrawerNavigator();
+const EthDraw = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<Eth.Navigator
+			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} tab={'eth'}/>}
+			screenOptions={{ headerShown: false }}
+			drawerType='back'>
+			<Eth.Screen
+				name='EthStack'
+				component={EthStack}
+			/>
+		</Eth.Navigator>
 	);
 };
 
 // OutsideStackModal
-const OutsideModal = createStackNavigator();
-const OutsideStackModal = () => {
+const Tab = createBottomTabNavigator();
+const TabNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<OutsideModal.Navigator mode='modal' screenOptions={{ ...outsideHeader, ...themedHeader(theme), ...ModalAnimation }}>
-			<OutsideModal.Screen
-				name='OutsideStack'
-				component={OutsideStack}
-				options={{ headerShown: false }}
+		<Tab.Navigator
+			initialRouteName="RoomsListStack"
+			resetOnBlur={true}
+			tabBarOptions={{
+				activeTintColor: themes[theme].activeTintColor,
+				inactiveTintColor: themes[theme].inactiveTintColor,
+			}}
+		>
+			<Tab.Screen
+				name="Btc"
+				component={BtcDraw}
+				navigationOptions = {{
+					tabBarIcon: <Text>₿</Text>,
+					title: 'Bitcoin'}}
+				/>
+			<Tab.Screen
+				name="Eth"
+				component={EthDraw}
+				navigationOptions = {{
+					tabBarIcon: <Text>Ξ</Text>,
+					title: 'Ethereum'}}
 			/>
-			{/*<OutsideModal.Screen*/}
-			{/*	name='AuthenticationWebView'*/}
-			{/*	component={AuthenticationWebView}*/}
-			{/*	options={AuthenticationWebView.navigationOptions}*/}
-			{/*/>*/}
-		</OutsideModal.Navigator>
+		</Tab.Navigator>
 	);
 };
 
-export default OutsideStackModal;
+export default TabNavigator;
