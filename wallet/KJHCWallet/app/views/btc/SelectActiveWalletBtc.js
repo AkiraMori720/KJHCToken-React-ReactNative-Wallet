@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Alert, FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, FlatList, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import {deleteWalletAction, selectActiveWalletAction} from '../../actions/btc';
 
 // import SelectActiveWallet from '../screens/SelectActiveWallet';
-// import {networkOptions} from '../../lib/btcService';
+import {DEFAULT_NETWORK} from '../../lib/btcService';
 
 const styles = StyleSheet.create({
     walletName: {
@@ -13,15 +13,6 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
     },
 });
-
-const mapStateToProps = (state) => ({
-    wallets: selectWallets(state),
-});
-
-const mapDispatchToProps = {
-    selectActiveWallet: selectActiveWalletAction,
-    deleteWallet: deleteWalletAction,
-};
 
 class SelectActiveWalletContainer extends React.Component {
     static propTypes = {
@@ -32,6 +23,9 @@ class SelectActiveWalletContainer extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            network: DEFAULT_NETWORK
+        }
     }
 
     handleDelete = (walletId) => {
@@ -86,5 +80,14 @@ class SelectActiveWalletContainer extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    wallets: state.btc.wallets
+});
+
+const mapDispatchToProps = {
+    selectActiveWallet: selectActiveWalletAction,
+    deleteWallet: deleteWalletAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectActiveWalletContainer);

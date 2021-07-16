@@ -37,4 +37,5 @@ export default function btc(state = initialState, action) {
         case BTC.EXPORT_WALLET.SUCCESS:
             return {};
     }
+    return state;
 }

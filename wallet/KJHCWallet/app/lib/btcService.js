@@ -1,6 +1,5 @@
 import bs58check from 'bs58check';
 import bip21 from 'bip21';
-import BitcoreClient from 'bitcore-wallet-client';
 
 import { parseBitcoinInputToSatoshi } from './unitsService';
 import config from '../config';

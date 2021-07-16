@@ -8,3 +8,10 @@ export const apiCallIds = {
     EXPORT_WALLET: 'EXPORT_WALLET',
     IMPORT_WALLET: 'IMPORT_WALLET',
 };
+
+export const ETH_NETWORKS = {
+    MAIN_NET: 'mainnet',
+    ROPSTEN: 'ropsten',
+    RINKEBY: 'rinkeby',
+    KOVAN: 'kovan'
+}
