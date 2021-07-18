@@ -1,37 +1,24 @@
-import { compose } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga'
-import { createBrowserHistory } from 'history'
-import { createStore, combineReducers } from 'redaction'
-import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { persistStore, persistReducer} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 
-import localReducers from './reducers'
+import rootReducer from './reducers'
 import rootSaga from './sagas';
 
-const history = createBrowserHistory()
-const middleware = routerMiddleware(history)
 const sagaMiddleware = createSagaMiddleware();
-const initialState = (localStorage['redux-store']) ? JSON.parse(localStorage['redux-store']) : {}
-const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (v) => v
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const _storeConfig = {
-  reducers: {
-    router: connectRouter(history),
-    ...combineReducers(localReducers),
-  },
-  middleware: [
-    middleware,
-    sagaMiddleware
-  ],
-  enhancers: [
-    devTools,
-  ],
-  initialState,
+const persistConfig = {
+  key: 'root',
+  storage
 }
 
-const store = createStore(_storeConfig);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(sagaMiddleware)));
+const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 
-export default store;
-export { history };
+export { store, persistor };
